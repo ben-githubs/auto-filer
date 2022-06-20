@@ -1,0 +1,17 @@
+filter:
+  name: 'file\s*\d+'
+  age:
+    max: 2yr
+  size:
+    max: 3000mb
+  filetype:
+    - txt
+
+rule:
+  folders:
+    - 'E:\testing'
+  move:
+    destination: dest
+  rename:
+    old pattern: 'file\s*(\d+)\.txt'
+    new pattern: 'Better File Name Number \1.txt'

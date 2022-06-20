@@ -1,0 +1,49 @@
+folders:
+  type: list
+  schema:
+    check_with: path
+    type: string
+  required: true
+interval:
+  type: integer
+  min: 0
+  default: 30
+rename:
+  type: dict
+  excludes:
+    - delete
+  schema:
+    old pattern:
+      type: string
+      required: true
+    new pattern:
+      type: string
+      required: true
+    overwrite:
+      type: boolean
+      default: false
+    copy:
+      type: boolean
+      default: false
+move:
+  type: dict
+  schema:
+    destination:
+      type: string
+      check_with: path
+      required: true
+    overwrite:
+      type: boolean
+      default: false
+    copy:
+      type: boolean
+      default: false
+  excludes:
+    - delete
+delete:
+  type: boolean
+  excludes:
+    - rename
+    - move
+command:
+  type: string

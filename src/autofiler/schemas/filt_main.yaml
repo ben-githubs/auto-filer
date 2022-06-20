@@ -1,0 +1,84 @@
+name:
+  type: string
+size:
+  type: dict
+  schema:
+    equals:
+      type: string
+      regex: '(\d+)(b|kb|mb|gb|tb)'
+      excludes:
+        - min
+        - max
+    min:
+      type: string
+      regex: '(\d+)(b|kb|mb|gb|tb)'
+      excludes:
+        - equals
+    max:
+      type: string
+      regex: '(\d+)(b|kb|mb|gb|tb)'
+      excludes:
+        - equals
+filetype:
+  type: list
+  schema:
+    type: string
+date created:
+  type: dict
+  excludes: age
+  schema:
+    equals:
+      type: string
+      regex: '^\d{4}-\d{1,2}-\d{1,2}(T\d{1,2}:\d{1,2}:\d{1,2})?$'
+      excludes:
+        - min
+        - max
+    min:
+      type: string
+      regex: '^\d{4}-\d{1,2}-\d{1,2}(T\d{1,2}:\d{1,2}:\d{1,2})?$'
+      excludes:
+        - equals
+    max:
+      type: string
+      regex: '^\d{4}-\d{1,2}-\d{1,2}(T\d{1,2}:\d{1,2}:\d{1,2})?$'
+      excludes:
+        - equals
+date modifed:
+  type: dict
+  schema:
+    equals:
+      type: string
+      regex: '^\d{4}-\d{1,2}-\d{1,2}(T\d{1,2}:\d{1,2}:\d{1,2})?$'
+      excludes:
+        - min
+        - max
+    min:
+      type: string
+      regex: '^\d{4}-\d{1,2}-\d{1,2}(T\d{1,2}:\d{1,2}:\d{1,2})?$'
+      excludes:
+        - equals
+    max:
+      type: string
+      regex: '^\d{4}-\d{1,2}-\d{1,2}(T\d{1,2}:\d{1,2}:\d{1,2})?$'
+      excludes:
+        - equals
+age:
+  type: dict
+  excludes: date created
+  schema:
+    equals:
+      type: string
+      regex: '^(?:(\d+)yr)?\s*(?:(\d+)mo)?\s*(?:(\d+)dy)?\s*(?:(\d+)h)?\s*(?:(\d+)m)?\s*(?:(\d+)s)?'
+      excludes:
+        - min
+        - max
+    min:
+      type: string
+      regex: '^(?:(\d+)yr)?\s*(?:(\d+)mo)?\s*(?:(\d+)dy)?\s*(?:(\d+)h)?\s*(?:(\d+)m)?\s*(?:(\d+)s)?'
+      excludes:
+        - equals
+    max:
+      type: string
+      regex: '^(?:(\d+)yr)?\s*(?:(\d+)mo)?\s*(?:(\d+)dy)?\s*(?:(\d+)h)?\s*(?:(\d+)m)?\s*(?:(\d+)s)?'
+      excludes:
+        - equals

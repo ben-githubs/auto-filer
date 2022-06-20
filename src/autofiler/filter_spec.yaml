@@ -1,0 +1,33 @@
+filter:
+  name: regex expression
+  size: the exact size of the file
+  size min: the min size
+  size max: the max size
+  ftype:
+    - list of allowed filetypes
+  date created: the exact date the file was created
+  date created min: the oldest date the file was created
+  date created max: the most recent date the file was created
+  age min: time passed since file created (in 1yr 2mo 3dy 4h 5m 6s format)
+  age max: amx age, in same format as above
+  date modified: the exact date the file was modified
+  date modified min: the oldest date the file was modified
+  date modified max: the most recent date the file was modified
+  or: a list of two or more filter objects, at least one of which must be satisfied
+  and: a list of two or more filter objects, all of which must be satisfied
+  xor: a list of two or more filter objects, exactly one of which must be satisfied
+  not: a filter object, whose return value is negated
+  nand: shorthand for "not: and"
+  nor: shorthand for "not: or"
+
+action:
+  folders:
+    - a list of folders to scan files for
+  interval: interval (in minutes) to perform the scan.
+  rename:
+    - match pattern: a regex expression to match against. Groups in this expression can be called up in the next setting.
+    - new pattern: a new pattern, where you can call groups from the match. Example: bank_stmt_(\1)(\2).pdf
+  move to folder: name of folder to move to.
+  delete: yes or no; whether to delete this file. Overrides other settings (rename, copy, etc.)
+  copy: yes or no; if yes, then leaves the original file untouched and uses a copy for 'rename' and 'move to folder'
+  command: invoke a script when a file matches this rule. File attributes can be accessed via ${file.attr}. Using ${file} returns the abs path to the file.
