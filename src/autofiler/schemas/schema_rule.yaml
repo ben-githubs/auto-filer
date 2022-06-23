@@ -25,6 +25,9 @@ rename:
     copy:
       type: boolean
       default: false
+    parents:
+      type: boolean
+      default: false
 move:
   type: dict
   schema:
@@ -36,6 +39,9 @@ move:
       type: boolean
       default: false
     copy:
+      type: boolean
+      default: false
+    parents:
       type: boolean
       default: false
   excludes:

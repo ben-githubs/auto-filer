@@ -25,26 +25,38 @@ class rename(Action):
     new_pat: str
     copy: bool = False
     overwrite: bool = False
+    parents: bool = False
     
     def __call__(self, file):
         name = file.path.name
         old_pat = re.compile(self.old_pat)
         name = old_pat.sub(self.new_pat, name)
         old_path = file.path
-        new_path = file.path.parent / Path(name)
+        # Techincally, we can combine the moving and renaming in this step. If the new name is an absolute path, then we'll move it absolutely. Else, we add the path to the parent directory.
+        new_path = Path(name)
+        if not new_path.is_absolute():
+                new_path = file.path.parent / new_path
         fn = (lambda x: copy_file(file.path, x)) if self.copy else file.path.replace
         if not self.overwrite and new_path.exists():
                 error(f'A file already exists at "{new_path}". Skipping renaming of "{old_path}".')
                 return
-        file.path = fn(new_path)
-        verb = "Copied" if self.copy else "Renamed"
-        info(f"{verb} file: {old_path} -> {new_path}.")
+        # Create parent directory if allowed to
+        if self.parents:
+            new_path.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            file.path = fn(new_path)
+        except Exception as e:
+            error(f"An error occured while renaming file `{old_path}`: {e}")
+        else:
+            verb = "Copied" if self.copy else "Renamed"
+            info(f"{verb} file: {old_path} -> {new_path}.")
 
 @dataclass
 class move(Action):
     destination: Path
     copy: bool = False
     overwrite: bool = False
+    parents: bool = False
 
     def __call__(self, file):
         destination = Path(self.destination)
@@ -57,9 +69,16 @@ class move(Action):
         if not self.overwrite and destination.exists():
                 error(f'A file already exists at "{destination}". Skipping relocation of "{file.path.name}".')
                 return
-        file.path = fn(destination)
-        verb = "Copied" if self.copy else "Moved"
-        info(f"{verb} file: {old_path} -> {destination}.")
+        # Create parent directory if allowed to
+        if self.parents:
+            destination.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            file.path = fn(destination)
+        except Exception as e:
+            error(f"An error occured while moving file `{old_path}`: {e}")
+        else:
+            verb = "Copied" if self.copy else "Moved"
+            info(f"{verb} file: {old_path} -> {destination}.")
 
 class delete:
     def __call__(self, file):
